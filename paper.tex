@@ -13,8 +13,9 @@ BRAIN ALGORITHM}
 \address{$^{\star}$ Centre for Additions and Mental Health, Toronto ON, Canada \\
      $^{\dagger}$ Mouse Imaging Centre, ..., Toronto ON, Canada}
 
+\usepackage{Sweave}
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+\input{paper-concordance}
 \maketitle       
 
 \begin{abstract}
@@ -301,28 +302,7 @@ selecting the top 14 templates).
 \begin{minipage}[b]{1.0\linewidth}
   \centering
   %\includegraphics[width=\textwidth]{results}
-<<fig=TRUE, cached=TRUE, echo=FALSE, warnings=FALSE, >>=
-library(ggplot2)
-results = read.csv(file='data/results.csv')
-xcorr_vote= subset(results, method=='xcorr' | method == 'multiatlas_xcorr_vote' )
-qplot(x=top_n, y=k_hippocampus, data=xcorr_vote, colour=as.factor(num_atlases), geom=c('point'), alpha=I(0)) +
-  geom_smooth(line=1.5, formula=y~poly(x,2), method='lm') + 
-  geom_hline(aes(yintercept = mean(subset(results, method=='naive')$k_hippocampus))) + 
-  theme(legend.position="none") + 
-  ylab('Kappa') + 
-  xlab('Number of Atlases') +
-  annotate("text", 16.0, 0.712, label="Naive", size=4, hjust=0)+
-  annotate("text", 15.3, 0.754, label="3 atlases", size=4, hjust=0)+
-  annotate("text", 14.4, 0.766, label="4 atlases", size=4, hjust=0)+
-  annotate("text", 13.5, 0.770, label="5 atlases", size=4, hjust=0)+
-  annotate("text", 12.5, 0.773, label="6 atlases", size=4, hjust=0)+
-  annotate("text", 11.5, 0.776, label="7 atlases", size=4, hjust=0)+
-  annotate("text", 10.3, 0.779, label="8 atlases", size=4, hjust=0)+
-  annotate("text", 14.6, 0.793, label="Multi-atlas", size=4, hjust=0)+
-  coord_cartesian(ylim=c(0.7,0.8), xlim=c(3,18)) + 
-  scale_y_continuous(breaks=seq(0,1,0.01)) 
-
-@  
+\includegraphics{paper-001}
 \end{minipage}
 \caption{{\em Performance of MAGeT Brain across all validations compared to
 mean naive segmentation, and mean multi-atlas with cross-correlation voting.}
