@@ -614,8 +614,8 @@ FUNCTION {format.incoll.inproc.crossref}
 FUNCTION {article}
 { output.bibitem
   format.authors "author" output.check
-  new.block
-  format.title ",''" * "title" output.check
+  %ew.block
+  %format.title ",''" * "title" output.check
   new.ncblock
   crossref missing$
     { journal emphasize "journal" output.check
