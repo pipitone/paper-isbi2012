@@ -1,8 +1,62 @@
-\documentclass{article}
+\documentclass{article}\usepackage{graphicx, color}
+%% maxwidth is the original width if it is less than linewidth
+%% otherwise use linewidth (to make sure the graphics do not exceed the margin)
+\makeatletter
+\def\maxwidth{ %
+  \ifdim\Gin@nat@width>\linewidth
+    \linewidth
+  \else
+    \Gin@nat@width
+  \fi
+}
+\makeatother
+
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\definecolor{fgcolor}{rgb}{0.2, 0.2, 0.2}
+\newcommand{\hlnumber}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlfunctioncall}[1]{\textcolor[rgb]{0.501960784313725,0,0.329411764705882}{\textbf{#1}}}%
+\newcommand{\hlstring}[1]{\textcolor[rgb]{0.6,0.6,1}{#1}}%
+\newcommand{\hlkeyword}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlargument}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
+\newcommand{\hlcomment}[1]{\textcolor[rgb]{0.180392156862745,0.6,0.341176470588235}{#1}}%
+\newcommand{\hlroxygencomment}[1]{\textcolor[rgb]{0.43921568627451,0.47843137254902,0.701960784313725}{#1}}%
+\newcommand{\hlformalargs}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
+\newcommand{\hleqformalargs}[1]{\textcolor[rgb]{0.690196078431373,0.250980392156863,0.0196078431372549}{#1}}%
+\newcommand{\hlassignement}[1]{\textcolor[rgb]{0,0,0}{\textbf{#1}}}%
+\newcommand{\hlpackage}[1]{\textcolor[rgb]{0.588235294117647,0.709803921568627,0.145098039215686}{#1}}%
+\newcommand{\hlslot}[1]{\textit{#1}}%
+\newcommand{\hlsymbol}[1]{\textcolor[rgb]{0,0,0}{#1}}%
+\newcommand{\hlprompt}[1]{\textcolor[rgb]{0.2,0.2,0.2}{#1}}%
+
+\usepackage{framed}
+\makeatletter
+\newenvironment{kframe}{%
+ \def\at@end@of@kframe{}%
+ \ifinner\ifhmode%
+  \def\at@end@of@kframe{\end{minipage}}%
+  \begin{minipage}{\columnwidth}%
+ \fi\fi%
+ \def\FrameCommand##1{\hskip\@totalleftmargin \hskip-\fboxsep
+ \colorbox{shadecolor}{##1}\hskip-\fboxsep
+     % There is no \\@totalrightmargin, so:
+     \hskip-\linewidth \hskip-\@totalleftmargin \hskip\columnwidth}%
+ \MakeFramed {\advance\hsize-\width
+   \@totalleftmargin\z@ \linewidth\hsize
+   \@setminipage}}%
+ {\par\unskip\endMakeFramed%
+ \at@end@of@kframe}
+\makeatother
+
+\definecolor{shadecolor}{rgb}{.97, .97, .97}
+\definecolor{messagecolor}{rgb}{0, 0, 0}
+\definecolor{warningcolor}{rgb}{1, 0, 1}
+\definecolor{errorcolor}{rgb}{1, 0, 0}
+\newenvironment{knitrout}{}{} % an empty environment to be redefined in TeX
+
+\usepackage{alltt}
 \usepackage{spconf,amsmath,graphicx,color,hyperref}
 
 \newcommand{\todo}[1]{\textcolor{red}{#1}}
-\newcommand{\magetbrain}{MAGeT brain }
 
 \title{HIPPOCAMPAL SEGMENTATION WITH A VERY SMALL ATLAS LIBRARY: THE MAGET
 BRAIN ALGORITHM} 
@@ -20,9 +74,8 @@ $^4$ Program in Neuroscience and Mental Health, The Hospital for Sick Children,
 $^5$ Department of Medical Biophysics, University of Toronto, Toronto, ON, Canada
 }
 
-\usepackage{Sweave}
 \begin{document}
-\input{paper-concordance}
+
 \maketitle       
 
 \begin{abstract}
@@ -37,7 +90,7 @@ whilst still achieving similar accuracy to  other multi-atlas approaches.  We
 perform repeated random subsampling validation on the IBSR dataset to compare
 our approach to multi-atlas segmentation using the full IBSR dataset, and to
 single-atlas (model-based) segmentation. Our results show that with only 8
-input atlas, \magetbrain can achieve to within 2.0\% segmentation accuracy of
+input atlas, MAGeT brain can achieve to within 2.0\% segmentation accuracy of
 the multi-atlas approach using 17 input atlases (mean $\kappa = 0.775$ vs.
 $\kappa = 0.791$).
 
@@ -119,7 +172,7 @@ the possibility of producing comparable segmentation accuracy to these and
 other multi-atlas-based methods whilst using significantly fewer manually
 created atlases.
 
-In previous work from our group \cite{Chakravarty2011}, we applied \magetbrain
+In previous work from our group \cite{Chakravarty2011}, we applied MAGeT brain
 to the segmentation the striatum, globus pallidus, and thalamus using a single
 histologically-derived atlas. In the present work we extend our approach to the
 hippocampus, a much more difficult structure to segment, and perform a thorough
@@ -143,26 +196,22 @@ as we will discuss, a template library may also be composed of images with
 computer generated labellings. 
 
 The segmentation approach we propose is best understood as an extension of
-traditional multi-atlas segmentation.  In multi-atlas segmentation, the inputs
-are an atlas library and a set of unlabelled MR images.  An unlabelled image is
-segmented in the following way.  Each atlas image is non-linearly registered to
-the unlabelled image, and then each atlas' labels are propagated via the
-resulting transformation.  These candidate labels are then fused to produce a
-definitive segmentation. The label fusion method used may determine which
-templates are used to segment a particular subject (for instance, voxel-wise
-majority vote takes labels from all atlases, whereas a weighted majority vote
-selects only those templates most similar to the subject). 
+traditional multi-atlas segmentation.  In multi-atlas segmentation, an atlas
+library and unlabelled MR images are given as input.  Every atlas image is
+nonlinearly registered to each unlabelled image, and then each atlas' labels
+are propagated via the resulting transformations.  These labels are then fused
+to produce a single, definitive segmentation by some label fusion method (e.g.
+voxel-wise majority vote). 
 
-Our extension to this approach is to add a preliminary stage in which we
-construct a template library to be used as if it were the atlas library
-in the standard multi-atlas-based method.  To do this we select from the
-input images to form the template library.  Next, labels from each atlas
-image are propagated to each image in the template library (via the
-transformation resulting from a non-linear registration between each pair
-of images).  Thus, each template library image has a labelling from each
-atlas.  Traditional multi-atlas segmentation is then used to produce
-segmentations for the entire set of unlabelled images (including those
-images used in the template library). 
+Our extension adds a preliminary stage in which a template library is
+constructed from input images, and used in place of an atlas library in the
+standard multi-atlas-based method.  To create the template library, labels from
+each atlas image are propagated to each template library image via the
+transformation resulting from a non-linear registration between pair of images.
+As a result, each template library image has a label from each atlas.
+Traditional multi-atlas segmentation is then used to produce segmentations for
+the entire set of unlabelled images (including those images used in the
+template library). 
 
 Label fusion is performed by cross-correlation weighted voting, a strategy
 weighted towards an optimal combination of subjects from the template library
@@ -187,28 +236,27 @@ The images come 'positionally normalized' into the Talairach orientation
 routines. The MR brain data sets and their manual segmentations are publicly
 available and were provided by the Center for Morphometric Analysis at
 Massachusetts General Hospital and are available at
-\url{''http://www.cma.mgh.harvard.edu/ibsr/''}. 
-
+\href{http://www.cma.mgh.harvard.edu/ibsr/}
+{\nolinkurl{http://www.cma.mgh.harvard.edu/ibsr/}}. 
 
 \subsection{Image Processing and Registration Method}
 The N3 algorithm \cite{Sled1998} is first used to minimize the intensity
-nonuniformity in each of the atlases and unlabeled subject images.  Image
-registration is carried out in two phases.  In the first, a 12-parameter linear
-transformation (3 translations, rotations, scales, shears) is estimated between
-images using an algorithm that maximizes the correlation between blurred MR
-intensities and gradient magnitude over the whole brain \cite{Collins}.  In the
-second phase, nonlinear registration is completed using the ANIMAL algorithm
-\cite{Collins1995}: an iterative procedure that estimates a 3D deformation
-field between two MR images. At first, large deformations are estimated using
-blurred version of the input data. These larger deformations are then input to
-subsequent steps where the fit is refined by estimating smaller deformations on
-data blurred with a Gaussian kernel with a smaller FWHM. The final
-transformation is a set of local translations defined on a bed of equally
-spaced nodes that were estimated through the optimization of the correlation
-coefficient. For the purposes of this work we used the regularization
-parameters optimized in Robbins et al.\cite{Robbins2004}. It should be
-noted that the \magetbrain algorithm is not dependant on this, or any,
-particular choice of registration method\cite{Chakravarty2011}.
+nonuniformity in each image.  Image registration is carried out in two phases.
+In the first, a 12-parameter linear transformation (3 translations, rotations,
+scales, shears) is estimated between images using an algorithm that maximizes
+the correlation between blurred MR intensities and gradient magnitude over the
+whole brain \cite{Collins}.  In the second phase, nonlinear registration is
+completed using the ANIMAL algorithm \cite{Collins1995}: an iterative procedure
+that estimates a 3D deformation field between two MR images. At first, large
+deformations are estimated using blurred version of the input data. These
+larger deformations are then input to subsequent steps where the fit is refined
+by estimating smaller deformations on data blurred with a Gaussian kernel with
+a smaller FWHM. The final transformation is a set of local translations defined
+on a bed of equally spaced nodes that were estimated through the optimization
+of the correlation coefficient. For the purposes of this work we used the
+regularization parameters optimized in Robbins et al.\cite{Robbins2004}. It
+should be noted that the MAGeT brain algorithm is not dependant on this, or
+any, particular choice of registration method\cite{Chakravarty2011}.
 
 \subsection{Experiments}
 
@@ -217,36 +265,32 @@ effects labeling accuracy.  For each parameter setting we conducted 30 rounds
 of random subsampling cross-validation using the 18 manual segmented templates
 from the IBSR dataset as input. In each round, atlases were randomly chosen
 from the IBSR dataset and the remaining images are used both as template
-library images and unlabeled subjects to be labeled using the \magetbrain
+library images and unlabeled subjects to be labeled using the MAGeT brain
 algorithm.  We varied the size of the atlas library from 3 to 8, and used
 cross-correlation weighted label fusion to select the top $n$ candidate
-templates from the remaining images.  The size of the template library ($n$)
-was varied in the range $[3, 18-a]$ (where $a$ is the size of the atlas
-library).
+templates from the remaining images.  $n$ was varied in the range $[3, 18-a]$,
+where $a$ is the size of the atlas library.
 
 \subsection{Evaluation}
 \subsubsection{Goodness-of-fit}
-Each segmentation was evaluated against the manual segmentation from the IBSR
-dataset using the Dice Kappa ($\kappa$) overlap metric, $\kappa =
-\frac{2a}{2a+b+c}$, where $a$ is the number of voxels common to the candidate
-segmentation and the gold standard and $b+c$ is the sum of the voxels uniquely
-identified by either the automatically generated candidate segmentation or the
-gold-standard.
+Automatically produced segmentations are evaluated against IBSR manual
+segmentations dataset using the Dice Kappa ($\kappa$) overlap metric, $\kappa =
+{2a}/{(2a+b+c)}$, where $a$ is the number of voxels common to both
+segmentations and $b+c$ is the sum of the voxels uniquely identified in either
+segmentation.
 
 \subsubsection{Comparison Approaches}
-The resulting segmentations from each of our experiments is compared to two
-alternative segmentation approaches. The {\it single-atlas} approach uses one
-atlas to segment an unlabelled subject by directly propagating labels from
-atlas by way of nonlinear registration.  For each image in the IBSR dataset we
-computed the single-atlas segmentation from each of the other 17 labelled
-images. For the {\it multi-atlas} approach, described above, we performed
-leave-one-out validation in which each image in the IBSR dataset is segmented
-using an atlas library of the remaining 17 images. To compare with the MAGeT
-brain results we also varied the number of atlas images used in the label
-fusion step by employing cross-correlation weighted voting.  In total we
-evaluated approximately $52,000$ segmentations for the work presented in this
-manuscript.
-
+The resulting segmentations from each of our experiments are compared to those
+produced from two alternative segmentation approaches. The {\it single-atlas}
+approach uses one atlas to segment a unlabelled subject by directly propagating
+labels from the atlas by way of nonlinear registration.  We computed a
+single-atlas segmentation for each image in the IBSR dataset from each of the
+other 17 labelled images.  Similarly, we computed a segmentation for each image
+using the {\it multi-atlas} approach, described above, using the other 17
+images as the atlas library.  Additionally, we also varied the number of atlas
+images used in the label fusion step by employing cross-correlation weighted
+voting.  In total we evaluated approximately $52,000$ segmentations for the
+work presented in this manuscript.
 
 \section{Results}
 
@@ -260,21 +304,21 @@ reduced.  This is correlated with an increase in segmentation accuracy.
   \centering
   \includegraphics[width=\textwidth]{montage.png}
 \end{minipage}
-\caption{{\em Sample \magetbrain segmentations.} 
+\caption{{\em Sample MAGeT brain segmentations.} 
 Segmentations of a single subject are shown when three atlases are used, with
 varying template library size $n$. Blue colouring represents agreement between
-the gold-standard and \magetbrain. Green colouring indicates false positive
-voxels labelled by \magetbrain, and red colouring indicates false negative
+the gold-standard and MAGeT brain. Green colouring indicates false positive
+voxels labelled by MAGeT brain, and red colouring indicates false negative
 voxels.
 } 
 \label{montage}
 \end{figure}
 
-\magetbrain shows distinct improvement in segmentation accuracy with increasing
+MAGeT brain shows distinct improvement in segmentation accuracy with increasing
 atlas library size (Fig. \ref{results}), reaching its highest accuracy using 8
 atlases (mean $\kappa = 0.775$).  This level of accuracy is within 2.0\% of the
 multi-atlas approach (mean $\kappa = 0.791$) using 17 atlases. With only 3
-atlases, \magetbrain reaches to within 6.5\% accuracy of the multi-atlas
+atlases, MAGeT brain reaches to within 6.5\% accuracy of the multi-atlas
 approach, and performs significantly better than the average single-atlas
 performance. Surprisingly, our results do not show any significant improvements
 in segmentation accuracy when applying cross-correlation weighted voting to
@@ -284,10 +328,13 @@ reduce the number of template labels being fused.
 \begin{minipage}[b]{1.0\linewidth}
   \centering
   %\includegraphics[width=\textwidth]{results}
-\includegraphics{paper-001}
+\begin{knitrout}
+\definecolor{shadecolor}{rgb}{0.969, 0.969, 0.969}\color{fgcolor}\includegraphics[width=\maxwidth]{figure/unnamed-chunk-1} 
+\end{knitrout}
+
 \end{minipage}
 \caption{
-Mean performance of \magetbrain with varying atlas library size and number of
+Mean performance of MAGeT brain with varying atlas library size and number of
 template labels fused. Also shown is the mean multi-atlas performance when
 using an atlas library of 17 images and varying the number of labels fused, as
 well as the mean performance of single-atlas segmentations.  Data is fit with
@@ -301,9 +348,9 @@ ribbon.
 
 In this paper, we have demonstrated that accurate segmentations can be produced
 by automatically deriving a template library from a small set of input atlases.
-\magetbrain segmentations were compared to both single-atlas segmentations and
+MAGeT brain segmentations were compared to both single-atlas segmentations and
 multi-atlas segmentations with cross-correlation voting.  For the IBSR dataset,
-on average \magetbrain achieves within 2.0\% of the segmentation accuracy of
+on average MAGeT brain achieves within 2.0\% of the segmentation accuracy of
 the multi-atlas approach but requires only 8 atlases as compared to using the
 entire IBSR manually segmented library of 17 atlases.
 

@@ -7,8 +7,8 @@ paper.pdf: paper.tex references.bib
 	pdflatex paper.tex
 
 %.tex: %.Rnw
-	R CMD Sweave $*.Rnw
-	#$(RSCRIPT) -e "library(knitr); knit(\"$*.Rnw\")" 
+	#R CMD Sweave $*.Rnw
+	$(RSCRIPT) -e "library(knitr); knit(\"$*.Rnw\")" 
 
 clean:
 	rm -f *.aux *.log *.bbl *.blg paper.pdf
