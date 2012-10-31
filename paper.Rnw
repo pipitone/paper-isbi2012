@@ -1,44 +1,44 @@
 \documentclass{article}
 \usepackage{spconf,amsmath,graphicx,color,hyperref}
 
-\newcommand{\todo}[1]{
-    \textcolor{red}{#1}
-}
+\newcommand{\todo}[1]{\textcolor{red}{#1}}
+\newcommand{\magetbrain}{MAGeT brain }
 
 \title{HIPPOCAMPAL SEGMENTATION WITH A VERY SMALL ATLAS LIBRARY: THE MAGET
 BRAIN ALGORITHM} 
-\name{  Jon Pipitone$^{\star}$ Jason P. Lerch$^{\dagger}$ Miriam Friedel$^{\dagger}$ Aristotle Voineskos$^{\star}$
-         Mallar Chakravarty$^{\star}$ }  
+\name{  Jon Pipitone$^{1}$ Jason P. Lerch$^{4,5}$ Miriam Friedel$^{4,5}$
+        Aristotle Voineskos$^{1,3}$ Mallar Chakravarty$^{1,2,3}$ }  
 
-\address{$^{\star}$ Centre for Additions and Mental Health, Toronto ON, Canada \\
-     $^{\dagger}$ Mouse Imaging Centre, ..., Toronto ON, Canada}
+\address{
+$^1$ Kimel Family Translational Imaging Genetics Research Laboratory, \\
+     Research Imaging Centre, Centre for Addiction and Mental Health, Toronto, ON, Canada \\
+$^2$ Institute of Biomaterials and Biomedical Engineering, University of
+     Toronto, Toronto, ON, Canada \\
+$^3$ Department of Psychiatry, University of Toronto, Toronto, ON, Canada \\
+$^4$ Program in Neuroscience and Mental Health, The Hospital for Sick Children,
+     Toronto, ON, Canada \\
+$^5$ Department of Medical Biophysics, University of Toronto, Toronto, ON, Canada
+}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 \maketitle       
 
 \begin{abstract}
-Neuroimaging research often relies on automated anatomical
-segmentations of MR images of the brain. Current multi-atlased based
-approaches provide accurate segmentations of brain images by
-propagating region labels from manual delineations to unlabeled
-images.  Unfortunately, these approaches often rely on a large number
-of such manual segmentations which take time and significant expertise
-to produce, neither of which may be readily available.  We present
-an algorithm for the automatic segmentation of the hippocampus that
-minimizes the number of atlases needed whilst still achieving nearly
-the same accuracy as other multi-atlas approaches.  We perform
-repeated random sub-sampling validation on the IBSR dataset to
-validate our approach and find an average best case percent difference
-to the multi-atlas approach of 1.9\%. \todo{i still think that his sentence
-needs to be clearer; break this out into two sentences - or more- where
-first you talk about the validation approach, including the different
-methodologies.  in a second sentence you should discuss the results.  also
-i think we need some emphasis here on how much better this approach is than
-the regular naive/multi-atlas-based procedures.  there is a clear benefit to
-using maget brain when you don't want to invest the time into creating a
-template library.}
-% fix last line: clarify "best case percent difference"
+Neuroimaging research often relies on automated anatomical segmentations of MR
+images of the brain. Current multi-atlas based approaches provide accurate
+segmentations of brain images by propagating region labels from manual
+delineations to unlabeled images. Unfortunately, these approaches often rely on
+a large number of such manual-segmentated atlases which take time and
+significant expertise to produce. We present an algorithm for the automatic
+segmentation of the hippocampus that minimizes the number of atlases needed
+whilst still achieving similar accuracy to  other multi-atlas approaches.  We
+perform repeated random subsampling validation on the IBSR dataset to compare
+our approach to multi-atlas segmentation using the full IBSR dataset, and to
+single-atlas (model-based) segmentation. Our results show that with only 8
+input atlas, \magetbrain can achieve to within 2.0\% segmentation accuracy of
+the multi-atlas approach using 17 input atlases (mean $\kappa = 0.775$ vs.
+$\kappa = 0.791$).
 
 \end{abstract}
 
@@ -51,10 +51,10 @@ hippocampus, segmentation, multi-atlas, automated
 
 The hippocampus is of particular interest to many researchers because it is
 implicated in forms of brain dysfunction such as Alzheimer's disease and
-schizophrenia, and has functional significance in cognitive processes such
-as learning and memory.  For many research questions involving magnetic
-resonance imaging (MRI) data accurate identification of the hippocampus and
-its subregions in participant MR images is a necessary first step to better
+schizophrenia, and has functional significance in cognitive processes such as
+learning and memory.  For many research questions involving magnetic resonance
+imaging (MRI) data accurate identification of the hippocampus and its
+subregions in participant MR images is a necessary first step to better
 understand the individual neuroanatomy of specific subjects.  
 
 Currently, the gold standard for neuroanatomical segmentation is manual
@@ -99,37 +99,36 @@ not reflect the underlying neuroanatomical variability of the population under
 study or be suited to answer the research questions at hand.
 
 In this paper we propose an automated segmentation technique to address the
-issues found in existing multi-atlas-based methods  \todo{AND CREATE AND
-IMPROVEMENT OVER REGULAR ATLAS-BASED PROCEDURES??}.. Principly, our method
-aims to dramatically reduce the number of manually labelled atlases
-necessary.  It does this by using a small atlas set to {\it generate} a
-much larger ``template library'', which is then used to segment the
-subjects in the same fashion as other multi-atlas-based methods.  This
-approach has the additional advantage of using the unique subject
-population on hand to bootstrap the segmentation analysis.  
+above issues found in existing multi- atlas-based methods. Principly, our
+method aims to dramatically reduce the number of manually labelled atlases
+needed (under 10). It does this by using the small atlas library to boot-strap
+a much larger "template library", which is then used to segment the subjects in
+similar fashion as other multi-atlas-based methods. Our approach has the
+additional advantage of using the unique subject population on hand to
+initialise the segmentation analysis.
 
-The essential insight of generating a template library is not new.
-Heckemann \cite{Heckemann2006} compared generating a template library from
-a single atlas to standard multi-atlas segmentation and found poor
-performance and so deemed the approach as inviable.  The LEAP algorithm
-\cite{Wolz2010} proceeds by iteratively segmenting the unlabelled image
-most similar to the atlas library images and then incorporating the
-now-labelled image into the atlas library, but requires 30 starting
-atlases.  Our contribution is a method that outputs comparable segmentation
-accuracy to these and other multi-atlas-based methods whilst using
-significantly fewer manually created atlases.
+The essential insight of generating a template library is not new.  Heckemann
+\cite{Heckemann2006} compared generating a template library from a single atlas
+to standard multi-atlas segmentation and found poor performance and so deemed
+the approach as inviable.  The LEAP algorithm \cite{Wolz2010} proceeds by
+iteratively segmenting the unlabelled image most similar to the atlas library
+images and then incorporating the now-labelled image into the atlas library,
+but requires 30 starting atlases.  The novelty of our method is to demonstrate
+the possibility of producing comparable segmentation accuracy to these and
+other multi-atlas-based methods whilst using significantly fewer manually
+created atlases.
 
-In previous work from our group \cite{Chakravarty2011}, we explored
-this same approach to the segmentation of certain subcortical structures (striatum,
-globus pallidus, and thalamus) using a single histologically-derived atlas.
-\todo{challenge the "MODEST INCREMENTAL ADVANCE" argument} In this work we
-extend our approach to the hippocampus, and validate it by varying the
-atlas and template library sizes.  Due to the small number of atlases
-required, our method could easily accommodate different hippocampal
-definitions.  Our aim is not to improve on segmentation accuracy beyond
-existing methods, but instead to provide a method that trades off manual
+In previous work from our group \cite{Chakravarty2011}, we applied \magetbrain
+to the segmentation the striatum, globus pallidus, and thalamus using a single
+histologically-derived atlas. In the present work we extend our approach to the
+hippocampus, a much more difficult structure to segment, and perform a thorough
+validation over a range of atlas and template library sizes. Due to the small
+number of atlases required, our method could easily accommodate different
+hippocampal definitions. Our aim is not to improve on segmentation accuracy
+beyond existing methods, but instead to provide a method that trades off manual
 segmentation expertise for computational processing time whilst providing
 sufficient accuracy for clinical and research applications.
+
 
 \section{Materials and Methods} 
 \subsection{The Multiple Automatically Generated Templates (MAGeT) Algorithm}
@@ -164,19 +163,30 @@ atlas.  Traditional multi-atlas segmentation is then used to produce
 segmentations for the entire set of unlabelled images (including those
 images used in the template library). 
 
-We use the {\it cross-correlation weighted voting} method to both improve the
-quality of the label fusion step and reduce the number of registrations
-required \todo{ref}.  In this method, each template library image is ranked 
-in similarity to each unlabelled image, and only the top $n$ template library
-images labels are used for the voxel-wise majority vote fusion step.
-Similarity scores are computed by the normalized cross-correlation of image
-intensities between an unlabeled image and each template library image, after
-the unlabeled image has undergone linearly registration to the template image.
-The cross-correlation score is calculated over a region of interest (ROI)
-on each template, representing a generous approximation of hippocampal
-structure and neighbourhood, defined as the extent of all atlas labels
-after linear registration to the template, dilated by three voxels.
-\todo{ref Heckmann}. 
+Label fusion is performed by cross-correlation weighted voting, a strategy
+weighted towards an optimal combination of subjects from the template library
+which has been previously shown to improve segmentation
+accuracy\cite{Aljabar2009,Collins2010}. In this method, each template library
+image is ranked in similarity to each unlabelled image by the normalized
+cross-correlation of image intensities after linear registration in a region of
+interest (ROI) generously encompassing hippocampus.  Only the top n ranked
+template library image labels are used in a voxel-wise majority vote. The ROI
+is heuristically defined as the extent of all atlas labels after linear
+registration to the template, dilated by three voxels\cite{Chakravarty2012}.
+
+\subsection{MRI dataset evaluated}
+
+For evaluation purposes we used the publicly available IBSR dataset.  This
+dataset consists of T1 weighted MR image volumes from 18 subjects (4 females,
+14 males) with ages between 7 and 71 years. Image dimensions for all MR volumes
+are normalized to  $256  \times 256 \times 128$ voxels, with the voxel size
+ranging from $0.8 \times 0.8 \times 1.5 mm$ to $1.0 \times 1.0 \times 1.5 mm$.
+The images come 'positionally normalized' into the Talairach orientation
+(rotation only), and processed by the CMA 'autoseg' biasfield correction
+routines. The MR brain data sets and their manual segmentations are publicly
+available and were provided by the Center for Morphometric Analysis at
+Massachusetts General Hospital and are available at
+\url{''http://www.cma.mgh.harvard.edu/ibsr/''}. 
 
 
 \subsection{Image Processing and Registration Method}
@@ -196,22 +206,8 @@ transformation is a set of local translations defined on a bed of equally
 spaced nodes that were estimated through the optimization of the correlation
 coefficient. For the purposes of this work we used the regularization
 parameters optimized in Robbins et al.\cite{Robbins2004}. It should be
-noted that the MAGeT brain algorithm is not dependant on this, or any,
+noted that the \magetbrain algorithm is not dependant on this, or any,
 particular choice of registration method\cite{Chakravarty2011}.
-
-\subsection{MRI dataset evaluated}
-
-For evaluation purposes we used the publicly available IBSR dataset.  This
-dataset consists of T1 weighted MR image volumes from 18 subjects (4 females,
-14 males) with ages between 7 and 71 years. Image dimensions for all MR volumes
-are normalized to  $256  \times 256 \times 128$ voxels, with the voxel size
-ranging from $0.8 \times 0.8 \times 1.5 mm$ to $1.0 \times 1.0 \times 1.5 mm$.
-The images come 'positionally normalized' into the Talairach orientation
-(rotation only), and processed by the CMA 'autoseg' biasfield correction
-routines. The MR brain data sets and their manual segmentations are publicly
-available and were provided by the Center for Morphometric Analysis at
-Massachusetts General Hospital and are available at
-\url{''http://www.cma.mgh.harvard.edu/ibsr/''}. 
 
 \subsection{Experiments}
 
@@ -220,7 +216,7 @@ effects labeling accuracy.  For each parameter setting we conducted 30 rounds
 of random subsampling cross-validation using the 18 manual segmented templates
 from the IBSR dataset as input. In each round, atlases were randomly chosen
 from the IBSR dataset and the remaining images are used both as template
-library images and unlabeled subjects to be labeled using the MAGeT Brain
+library images and unlabeled subjects to be labeled using the \magetbrain
 algorithm.  We varied the size of the atlas library from 3 to 8, and used
 cross-correlation weighted label fusion to select the top $n$ candidate
 templates from the remaining images.  The size of the template library ($n$)
@@ -238,59 +234,50 @@ gold-standard.
 
 \subsubsection{Comparison Approaches}
 The resulting segmentations from each of our experiments is compared to two
-alternative segmentation approaches. The {\it naive} approach is that in  which
-a single atlas is used to segment an unlabeled subject by directly propagating
-labels.  The {\it multi-atlas} approach, as described above, in which we used
-cross-correlation to select the top most similar atlases to each subject a
-atlas
-labels are propagated to an unlabeled subject and the labels are fused using
-the cross-correlation voting described above.  In total we evaluated
-approximately $52,000$ segmentations for the work presented in this manuscript.
+alternative segmentation approaches. The {\it single-atlas} approach uses one
+atlas to segment an unlabelled subject by directly propagating labels from
+atlas by way of nonlinear registration.  For each image in the IBSR dataset we
+computed the single-atlas segmentation from each of the other 17 labelled
+images. For the {\it multi-atlas} approach, described above, we performed
+leave-one-out validation in which each image in the IBSR dataset is segmented
+using an atlas library of the remaining 17 images. To compare with the MAGeT
+brain results we also varied the number of atlas images used in the label
+fusion step by employing cross-correlation weighted voting.  In total we
+evaluated approximately $52,000$ segmentations for the work presented in this
+manuscript.
 
 
 \section{Results}
 
-Sample segmentations from one of the IBSR subjects is shown in Fig.
-\ref{montage}.  The segmentations shown are varied across the template
-selection for a case where 3 atlases were used.  The figure demonstrates a
-reduction in false negatives (voxels labeled by the `gold-standard' only)
-in the hippocampal tail, a constant \todo{HOW DO YOU KNOW IT'S CONSTANT ??}  number of false positives (voxels
-labeled by the MAGeT Brain method only) in the hippocampal head, and an
-increase in the segmentation accuracy as the number of templates used from
-the template library are increased.  
+Sample segmentations from a single IBSR subject compared with the gold-standard
+segmentation are in Fig.  \ref{montage}.  As the size of the template library
+is increased, the number of false negatives in the hippocampal tail region is
+reduced.  This is correlated with an increase in segmentation accuracy.
 
 \begin{figure}[h]
 \begin{minipage}[b]{1.0\linewidth}
   \centering
   \includegraphics[width=\textwidth]{montage.png}
 \end{minipage}
-\caption{{\em Sample MAGeT Brain segmentations.} Segmentations of a single
-subject are shown when 3 atlases are used, with cross-correlation label
-fusion. Blue represents agreement between the gold-standard and MAGeT
-Brain.  Red indicates voxels labeled only by the gold-standard, and green
-indicates voxels labeled only by MAGeT Brain. Note improved accuracy as the
-number of templates is increased.} 
+\caption{{\em Sample \magetbrain segmentations.} 
+Segmentations of a single subject are shown when three atlases are used, with
+varying template library size $n$. Blue colouring represents agreement between
+the gold-standard and \magetbrain. Green colouring indicates false positive
+voxels labelled by \magetbrain, and red colouring indicates false negative
+voxels.
+} 
 \label{montage}
 \end{figure}
 
-In Fig. \ref{results} we compare the performance of the MAGeT Brain method
-across all validations (i.e. a combination of all atlases and template
-selections) against the multi-atlas method and the naive approach.
-Regardless of the number of atlases and templates used in a particular
-segmentation we see a marked increase in segmentation accuracy over the
-average naive segmentation (the average Kappa of all segmentations derived
-from all pairwise registrations in the IBSR dataset).  Clearly, including
-more input atlases increases segmentation accuracy.  Surprisingly,
-increasing the number of labels in the label fusion step through
-cross-correlation based voting, does little to improve segmentation
-accuracy (except for in the cases where 3 and 4 atlases are used).
-Finally, the best-case MAGeT Brain performance scenario is when 8 atlases
-are used.  While this does not reach the accuracy of the multi-atlas
-segmentation, there is only a 1.9\% difference in the average Kappa values
-($0.775$ for MAGeT Brain with 8 atlases and $0.790$ for multi-atlas after
-selecting the top 14 templates).  \todo{SOMETHING IN HERE AS AN EASY WAY TO BOOST ACCURACY FROM THE "ATLAS BASED CASE WOULD BE GOOD TOO}
-
-
+\magetbrain shows distinct improvement in segmentation accuracy with increasing
+atlas library size (Fig. \ref{results}), reaching its highest accuracy using 8
+atlases (mean $\kappa = 0.775$).  This level of accuracy is within 2.0\% of the
+multi-atlas approach (mean $\kappa = 0.791$) using 17 atlases. With only 3
+atlases, \magetbrain reaches to within 6.5\% accuracy of the multi-atlas
+approach, and performs significantly better than the average single-atlas
+performance. Surprisingly, our results do not show any significant improvements
+in segmentation accuracy when applying cross-correlation weighted voting to
+reduce the number of template labels being fused.
 
 \begin{figure}
 \begin{minipage}[b]{1.0\linewidth}
@@ -301,55 +288,66 @@ library(ggplot2)
 results = read.csv(file='data/results.csv')
 xcorr_vote= subset(results, method=='xcorr' | method == 'multiatlas_xcorr_vote' )
 qplot(x=top_n, y=k_hippocampus, data=xcorr_vote, colour=as.factor(num_atlases), geom=c('point'), alpha=I(0)) +
-  geom_smooth(line=1.5, formula=y~poly(x,2), method='lm') + 
+  geom_smooth(method="loess") + #line=1.5, formula=y~poly(x,2), method='lm') + 
   geom_hline(aes(yintercept = mean(subset(results, method=='naive')$k_hippocampus))) + 
   theme(legend.position="none") + 
-  ylab('Kappa') + 
-  xlab('Number of Atlases') +
-  annotate("text", 16.0, 0.712, label="Naive", size=4, hjust=0)+
+  ylab('Mean similarity score (Kappa)') + 
+  xlab('Number of template labels fused') +
+  annotate("text", 14.3, 0.712, label="Single-atlas", size=4, hjust=0)+
   annotate("text", 15.3, 0.754, label="3 atlases", size=4, hjust=0)+
   annotate("text", 14.4, 0.766, label="4 atlases", size=4, hjust=0)+
   annotate("text", 13.5, 0.770, label="5 atlases", size=4, hjust=0)+
   annotate("text", 12.5, 0.773, label="6 atlases", size=4, hjust=0)+
   annotate("text", 11.5, 0.776, label="7 atlases", size=4, hjust=0)+
   annotate("text", 10.3, 0.779, label="8 atlases", size=4, hjust=0)+
-  annotate("text", 14.6, 0.793, label="Multi-atlas", size=4, hjust=0)+
-  coord_cartesian(ylim=c(0.7,0.8), xlim=c(3,18)) + 
+  annotate("text", 14.5, 0.793, label="Multi-atlas", size=4, hjust=0)+
+  annotate("text", 14.6, 0.787, label="17 atlases", size=4, hjust=0)+
+  scale_colour_manual(values=c(
+    "#D73027","#FC8D59","#FEE08B","#D9EF8B", "#91CF60","#1A9850", "#000000")) + 
+  coord_cartesian(ylim=c(0.703,0.803), xlim=c(3,18)) + 
   scale_y_continuous(breaks=seq(0,1,0.01)) 
 
 @  
 \end{minipage}
-\caption{{\em Performance of MAGeT Brain across all validations compared to
-mean naive segmentation, and mean multi-atlas with cross-correlation voting.}
-Multi-atlas and naive segmentations procedures provide upper and lower bounds
-(respectively) for accuracy.  Note that improved segmentation accuracy is
-achieved through increasing the number of input atlases.}
+\caption{
+Mean performance of \magetbrain with varying atlas library size and number of
+template labels fused. Also shown is the mean multi-atlas performance when
+using an atlas library of 17 images and varying the number of labels fused, as
+well as the mean performance of single-atlas segmentations.  Data is fit with
+LOESS local regression smoothing lines, and include a standard deviation
+ribbon.
+}
 \label{results}
 \end{figure}
 
 \section{Discussion}
 
-In this paper, we have demonstrated that accurate segmentations can be
-achieved by simply automatically deriving a template library from a small
-set of input atlases.  MAGeT Brain segmentations were compared to both
-naive segmentations and multi-atlas segmentations with cross-correlation
-voting.  In \cite{Lotjonen2010}, the authors report a Kappa of 0.814 on
-hippocampal segmentation in the IBSR dataset using a multi-atlas approach
-where atlas selection is based on the similarity between atlas and
-unlabeled subject after nonlinear registration, and using STAPLE
-\cite{Warfield2004} for label fusion.  We demonstrated that the trade off
-in accuracy over a multi-atlas segmentation using the entire IBSR manually
-segmented library is only on average 1.9\%, using only 8 randomly chosen
-atlases.  Discrepancies between our results and the above results may be
-due to choice of registration algorithm, regularization parameters, or
-similarity metric for label fusion.  Performance may also be affected by
-the variability in the IBSR data set (as previously noted by
-\cite{Klein2009}).  Future work from our group will attempt to address some
-of these issues.
+In this paper, we have demonstrated that accurate segmentations can be produced
+by automatically deriving a template library from a small set of input atlases.
+\magetbrain segmentations were compared to both single-atlas segmentations and
+multi-atlas segmentations with cross-correlation voting.  For the IBSR dataset,
+on average \magetbrain achieves within 2.0\% of the segmentation accuracy of
+the multi-atlas approach but requires only 8 atlases as compared to using the
+entire IBSR manually segmented library of 17 atlases.
 
-\todo{discuss CC voting and why accuracy is monotonically increasing...
-wouldn't we expect an increase and then decrease?}
+L\"{o}tj\"{o}nen et al.\cite{Lotjonen2010} report a Kappa of 0.814 on
+hippocampal segmentation in the IBSR dataset using a multi-atlas approach where
+atlas selection is based on the similarity between atlas and unlabeled subject
+after nonlinear registration, and using STAPLE\cite{Warfield2004} for label
+fusion.  Discrepancies between our results and the above results may be due to
+choice of registration algorithm, regularization parameters, or similarity
+metric for label fusion.  Performance may also be affected by the variability
+in the IBSR data set (as previously noted by \cite{Klein2009}).  Future work
+from our group will attempt to address some of these issues.
+
+\subsection{Acknowledgements}
+Computations were performed on the gpc supercomputer at the SciNet HPC
+Consortium\cite{Loken2010}. SciNet is funded by: the Canada Foundation for
+Innovation under the auspices of Compute Canada; the Government of Ontario;
+Ontario Research Fund - Research Excellence; and the University of Toronto.
 
 \bibliographystyle{IEEEbib}
 \bibliography{references}
 \end{document}
+
+
