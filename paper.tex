@@ -58,10 +58,10 @@
 
 \newcommand{\todo}[1]{\textcolor{red}{#1}}
 
-\title{HIPPOCAMPAL SEGMENTATION WITH A VERY SMALL ATLAS LIBRARY: THE MAGET
+\title{HIPPOCAMPAL SEGMENTATION WITH A VERY SMALL ATLAS LIBRARY: THE MAGeT
 BRAIN ALGORITHM} 
-\name{  Jon Pipitone$^{1}$ Jason P. Lerch$^{4,5}$ Miriam Friedel$^{4,5}$
-        Aristotle Voineskos$^{1,3}$ Mallar Chakravarty$^{1,2,3}$ }  
+\name{  Jon Pipitone$^{1}$ Jason P. Lerch$^{4,5}$ Miriam Friedel$^{4}$
+        Aristotle N. Voineskos$^{1,3}$ M. Mallar Chakravarty$^{1,2,3}$ }  
 
 \address{
 $^1$ Kimel Family Translational Imaging Genetics Research Laboratory, \\
@@ -81,19 +81,19 @@ $^5$ Department of Medical Biophysics, University of Toronto, Toronto, ON, Canad
 \begin{abstract}
 Neuroimaging research often relies on automated anatomical segmentations of MR
 images of the brain. Current multi-atlas based approaches provide accurate
-segmentations of brain images by propagating region labels from manual
-delineations to unlabeled images. Unfortunately, these approaches often rely on
-a large number of such manual-segmentated atlases which take time and
-significant expertise to produce. We present an algorithm for the automatic
-segmentation of the hippocampus that minimizes the number of atlases needed
-whilst still achieving similar accuracy to  other multi-atlas approaches.  We
-perform repeated random subsampling validation on the IBSR dataset to compare
-our approach to multi-atlas segmentation using the full IBSR dataset, and to
-single-atlas (model-based) segmentation. Our results show that with only 8
-input atlas, MAGeT brain can achieve to within 2.0\% segmentation accuracy of
-the multi-atlas approach using 17 input atlases (mean $\kappa = 0.775$ vs.
-$\kappa = 0.791$).
-
+segmentations of brain images by propagating manually derived segmentations of
+specific neuroanatomical structures to unlabelled data. Unfortunately, these
+approaches often rely on a large number of such manually segmentated atlases
+that take significant time and expertise to produce. We present an algorithm
+for the automatic segmentation of the hippocampus that minimizes the number of
+atlases needed whilst still achieving similar accuracy to multi-atlas
+approaches.  We perform repeated random subsampling validation on the IBSR
+dataset to compare our approach to multi-atlas segmentation using the full IBSR
+dataset, and to single-atlas (model-based) segmentation. Our results show that
+with only 8 input atlas, MAGeT brain can achieve to within 2.0\% segmentation
+accuracy of the multi-atlas approach using 17 input atlases (mean $\kappa =
+0.775$ vs.  $\kappa = 0.791$).  These results compare favourably to others who
+have used the IBSR data for validation. 
 \end{abstract}
 
 \begin{keywords}
@@ -118,12 +118,11 @@ significant investment of time and expertise \cite{Hammers2003} which may not
 be readily available to researchers or clinicians.  Second, the amount of data
 produced in neuroimaging experiments increasingly exceeds the capacity for
 identification of specific neuroanatomical structures by an expert manual
-rater.  Third, the true delination of hippocampal anatomy in MR images is
+rater.  Third, the true delineation of hippocampal anatomy in MR images is
 disputed\cite{Geuze2004}, as evidenced by efforts to create an unified
-segmentation protocol\cite{Jack2011}.  Compounding each of these problems
-is the significant neuroanatomical variability in the hippocampus
-throughout the course of aging, development, and neuropsychiatric
-disorders\cite{someone}.
+segmentation protocol\cite{Jack2011}.  Compounding each of these problems is
+the significant neuroanatomical variability in the hippocampus throughout the
+course of aging, development, and neuropsychiatric disorders\cite{Mouiha2011}. 
 
 As well, it may be necessary to use several different hippocampal
 definitions or, in fact, make research-specific modifications in order to test
@@ -172,7 +171,7 @@ the possibility of producing comparable segmentation accuracy to these and
 other multi-atlas-based methods whilst using significantly fewer manually
 created atlases.
 
-In previous work from our group \cite{Chakravarty2011}, we applied MAGeT brain
+In previous work from our group \cite{Chakravarty2012}, we applied MAGeT brain
 to the segmentation the striatum, globus pallidus, and thalamus using a single
 histologically-derived atlas. In the present work we extend our approach to the
 hippocampus, a much more difficult structure to segment, and perform a thorough
@@ -256,7 +255,7 @@ on a bed of equally spaced nodes that were estimated through the optimization
 of the correlation coefficient. For the purposes of this work we used the
 regularization parameters optimized in Robbins et al.\cite{Robbins2004}. It
 should be noted that the MAGeT brain algorithm is not dependant on this, or
-any, particular choice of registration method\cite{Chakravarty2011}.
+any, particular choice of registration method\cite{Chakravarty2012}.
 
 \subsection{Experiments}
 
