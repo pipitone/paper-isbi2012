@@ -53,8 +53,8 @@ implicated in forms of brain dysfunction such as Alzheimer's disease and
 schizophrenia, and has functional significance in cognitive processes such as
 learning and memory.  For many research questions involving magnetic resonance
 imaging (MRI) data accurate identification of the hippocampus and its
-subregions in participant MR images is a necessary first step to better
-understand the individual neuroanatomy of specific subjects.  
+subregions is a necessary first step to better understand the individual
+neuroanatomy of subjects.  
 
 Currently, the gold standard for neuroanatomical segmentation is manual
 labelling by an expert human rater.  This is problematic for segmentation of
@@ -86,8 +86,8 @@ expertly labeled neuroanatomical atlases. Each atlas is warped to fit a
 subject's neuroanatomy using nonlinear registration
 techniques\cite{Collins1995,Klein2009}.  Atlas labels are then transformed
 by this warping and a {\it label fusion} technique, such as voxel-wise
-voting, is used to merge the labellings from each atlas into a final
-segmentation for a subject.  
+voting, is used to merge the competing label definitions from each atlas into a
+final segmentation for a subject.  
 
 Many descriptions of multi-atlas-based segmentation algorithms report relying on an
 atlas library containing between 30 and 80 expertly labeled
@@ -141,12 +141,12 @@ as we will discuss, a template library may also be composed of images with
 computer generated labellings. 
 
 The segmentation approach we propose is best understood as an extension of
-basic multi-atlas segmentation.  In multi-atlas segmentation, an atlas
-library and unlabelled MR images are given as input.  Every atlas image is
-nonlinearly registered to each unlabelled image, and then each atlas' labels
-are propagated via the resulting transformations.  These labels are then fused
-to produce a single, definitive segmentation by some label fusion method (e.g.
-voxel-wise majority vote). 
+basic multi-atlas segmentation\cite{Collins2010}.  In multi-atlas segmentation,
+an atlas library and unlabelled MR images are given as input.  Every atlas
+image is nonlinearly registered to each unlabelled image, and then each atlas'
+labels are propagated via the resulting transformations.  These labels are then
+fused to produce a single, definitive segmentation by some label fusion method
+(e.g.  voxel-wise majority vote). 
 
 Our extension adds a preliminary stage in which a template library is
 constructed from input images, and used in place of an atlas library in the
