@@ -14,4 +14,4 @@ dist:paper.tex
 	zip -r paper paper.tex references.bib IEEEbib.bst spconf.sty montage.png figure
 
 clean:
-	rm -f *.aux *.log *.bbl *.blg paper.pdf
+	rm -f *.aux *.log *.bbl *.blg paper.pdf paper.tex

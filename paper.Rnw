@@ -19,7 +19,14 @@ $^5$ Department of Medical Biophysics, University of Toronto, Toronto, ON, Canad
 }
 
 \begin{document}
-\SweaveOpts{concordance=TRUE}
+
+<<include=FALSE>>=
+library(knitr)
+opts_chunk$set(
+concordance=TRUE
+)
+@
+
 \maketitle       
 
 \begin{abstract}
@@ -278,7 +285,7 @@ weighted voting to reduce the number of template labels being fused.
 %\begin{minipage}[b]{1.0\linewidth}
   \centering
   %\includegraphics[width=\textwidth]{results}
-<<performance, fig=TRUE, cached=TRUE, echo=FALSE, warnings=FALSE >>=
+<<performance, cached=TRUE, echo=FALSE, warnings=FALSE >>=
 library(ggplot2)
 results = read.csv(file='data/results.csv')
 #results = read.csv(file='data/results_with_9multiatlas.csv')
