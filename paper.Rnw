@@ -19,8 +19,9 @@ $^5$ Department of Medical Biophysics, University of Toronto, Toronto, ON, Canad
 }
 
 \begin{document}
+\SweaveOpts{concordance=TRUE}
 
-<<include=FALSE>>=
+<<setup include=FALSE, echo=FALSE>>=
 library(knitr)
 opts_chunk$set(
 concordance=TRUE
@@ -282,14 +283,14 @@ segmentation accuracy for either method when applying cross-correlation
 weighted voting to reduce the number of template labels being fused.
 
 \begin{figure}[t]
-%\begin{minipage}[b]{1.0\linewidth}
   \centering
-  %\includegraphics[width=\textwidth]{results}
+  
 <<performance, cached=TRUE, echo=FALSE, warnings=FALSE >>=
 library(ggplot2)
+
 results = read.csv(file='data/results.csv')
-#results = read.csv(file='data/results_with_9multiatlas.csv')
 xcorr_vote= subset(results, method=='xcorr' | method == 'multiatlas_xcorr_vote' )
+
 qplot(x=top_n, y=k_hippocampus, data=xcorr_vote, colour=as.factor(num_atlases), geom=c('point'), alpha=I(0)) +
   geom_smooth(method='loess')+ #line=1.5, formula=y~poly(x,2), method='lm') + 
   geom_hline(aes(yintercept = mean(subset(results, method=='naive')$k_hippocampus), linetype="dashed")) + 
@@ -312,7 +313,6 @@ qplot(x=top_n, y=k_hippocampus, data=xcorr_vote, colour=as.factor(num_atlases), 
          "solid", "solid", "solid", "dashed")) +
   coord_cartesian(ylim=c(0.703,0.803), xlim=c(3,18)) + scale_y_continuous(breaks=seq(0,1,0.01))   
 @
-%\end{minipage}
 \caption{{\small
 Mean performance of MAGeT brain with varying atlas library size and number of
 template labels fused. Also shown is the mean basic multi-atlas
