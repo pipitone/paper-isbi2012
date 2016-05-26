@@ -1,9 +1,12 @@
 ---
 title: "How many atlases do you really need for accurate multi-atlas segmentation?"
-author: Jon Pipitone, Jason P. Lerch, Miriam Friedel, Aristotle N. Voineskos, M. Mallar Chakravarty
-output: 
-    pdf_document:
-        fig_caption: true
+author: Jon Pipitone, Jason P. Lerch, Miriam Friedel, Aristotle N. Voineskos, M. Mallar
+  Chakravarty
+output:
+  word_document: 
+    fig_caption: yes
+  pdf_document:
+    fig_caption: yes
 bibliography: references.bib
 ---
 
